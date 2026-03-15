@@ -3,17 +3,11 @@ services:
     build: .
     container_name: v60-brewing
     restart: unless-stopped
-    #ports:
+    ports:
+      - "101:4200"
     labels:
     - homepage.group=Tools
     - homepage.name=v60-brewing
     - homepage.icon=https://offline.tawkit.net/logo.png
     - homepage.href=https://v60.samad20.link/
     - homepage.description=V60 Brewing Guide
-    networks:
-      - nginx
-networks:
-  nginx:
-    external: true
-
-    
