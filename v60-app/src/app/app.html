@@ -1,0 +1,185 @@
+<!-- Header -->
+<header class="app-header">
+  <mat-icon class="header-icon">coffee</mat-icon>
+  <h1>V60 Coffee Brewing Guide</h1>
+  <p class="subtitle">Follow these steps to brew the perfect V60 coffee</p>
+</header>
+
+<main class="app-content">
+  <!-- Step 1: Brew Type -->
+  <mat-card class="step-card" appearance="outlined">
+    <mat-card-header>
+      <mat-icon mat-card-avatar class="step-icon">looks_one</mat-icon>
+      <mat-card-title>Select Your Brew Type</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-button-toggle-group [value]="brewType()" (change)="brewType.set($event.value)" class="full-width-toggle" hideSingleSelectionIndicator>
+        <mat-button-toggle value="hot">
+          <mat-icon>local_fire_department</mat-icon>
+          <span>Hot V60</span>
+        </mat-button-toggle>
+        <mat-button-toggle value="cold">
+          <mat-icon>ac_unit</mat-icon>
+          <span>Cold V60</span>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Step 2: Comfort Level -->
+  <mat-card class="step-card" appearance="outlined">
+    <mat-card-header>
+      <mat-icon mat-card-avatar class="step-icon">looks_two</mat-icon>
+      <mat-card-title>Select Your Comfort Level</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-button-toggle-group [value]="comfortLevel()" (change)="comfortLevel.set($event.value)" class="full-width-toggle" hideSingleSelectionIndicator>
+        <mat-button-toggle value="classic">
+          <mat-icon>balance</mat-icon>
+          <span>Classic</span>
+        </mat-button-toggle>
+        <mat-button-toggle value="fruit">
+          <mat-icon>eco</mat-icon>
+          <span>Fruit</span>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Step 3: Amounts -->
+  <mat-card class="step-card" appearance="outlined">
+    <mat-card-header>
+      <mat-icon mat-card-avatar class="step-icon">looks_3</mat-icon>
+      <mat-card-title>Enter Coffee or Water Amount</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="input-row">
+        <mat-form-field appearance="outline" class="amount-field">
+          <mat-label>Coffee (grams)</mat-label>
+          <input matInput type="number" [value]="coffeeAmount()" (input)="onCoffeeChange($any($event.target).value)" min="1" />
+          <mat-icon matSuffix>coffee_maker</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="amount-field">
+          <mat-label>Water (grams)</mat-label>
+          <input matInput type="number" [value]="waterAmount()" (input)="onWaterChange($any($event.target).value)" min="1" />
+          <mat-icon matSuffix>water_drop</mat-icon>
+        </mat-form-field>
+      </div>
+      <p class="ratio-hint">Ratio: 1:15 (coffee to water)</p>
+      <button mat-flat-button color="primary" class="calculate-btn" (click)="calculateRecipe()">
+        <mat-icon>calculate</mat-icon>
+        Calculate Recipe
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Step 4: Instructions -->
+  @if (recipeCalculated()) {
+    <mat-card class="step-card" appearance="outlined">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="step-icon">looks_4</mat-icon>
+        <mat-card-title>Brewing Instructions</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Temperature Notice -->
+        <div class="temperature-notice">
+          <mat-icon>thermostat</mat-icon>
+          <div>
+            <strong>Recommended Temperature: {{ temperature().min }}°C – {{ temperature().max }}°C</strong>
+            <p>{{ temperature().note }}</p>
+          </div>
+        </div>
+
+        <!-- Recipe Summary -->
+        <div class="recipe-summary">
+          <div class="recipe-item">
+            <mat-icon>coffee_maker</mat-icon>
+            <span><strong>Coffee:</strong> {{ coffeeAmount() }}g</span>
+          </div>
+          @if (brewType() === 'hot') {
+            <div class="recipe-item">
+              <mat-icon>water_drop</mat-icon>
+              <span><strong>Water:</strong> {{ waterAmount() }}g</span>
+            </div>
+          } @else {
+            <div class="recipe-item">
+              <mat-icon>water_drop</mat-icon>
+              <span><strong>Water:</strong> {{ coldWaterAmount() }}g</span>
+            </div>
+            <div class="recipe-item">
+              <mat-icon>ac_unit</mat-icon>
+              <span><strong>Ice:</strong> {{ iceAmount() }}g</span>
+            </div>
+          }
+          <div class="recipe-item">
+            <mat-icon>straighten</mat-icon>
+            <span><strong>Ratio:</strong> 1:15</span>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Timer -->
+        <div class="timer-section">
+          <h3>Bloom Timer</h3>
+          <div class="timer-display" [class.timer-done]="timerDone">
+            {{ timerDone ? "Time's up!" : timerDisplay }}
+          </div>
+          <div class="timer-controls">
+            <button mat-flat-button color="primary" (click)="startTimer()" [disabled]="timerRunning() || timerDone">
+              <mat-icon>play_arrow</mat-icon>
+              Start
+            </button>
+            <button mat-stroked-button (click)="resetTimer()">
+              <mat-icon>replay</mat-icon>
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Pour Steps -->
+        <div class="pour-steps">
+          <h3>Pouring Steps</h3>
+          @if (brewType() === 'hot') {
+            @for (step of hotSteps(); track step.label) {
+              <div class="pour-step">
+                <div class="step-label">{{ step.label }}</div>
+                <div class="step-detail">
+                  <p>{{ step.description }}</p>
+                  <p class="cumulative">Cumulative: {{ step.cumulative }}g</p>
+                </div>
+              </div>
+            }
+          } @else {
+            <div class="pour-step ice-step">
+              <div class="step-label">Ice</div>
+              <div class="step-detail">
+                <p>Place {{ iceAmount() }}g of ice in your server/carafe.</p>
+              </div>
+            </div>
+            @for (step of coldSteps(); track step.label) {
+              <div class="pour-step">
+                <div class="step-label">{{ step.label }}</div>
+                <div class="step-detail">
+                  <p>{{ step.description }}</p>
+                  <p class="cumulative">Cumulative: {{ step.cumulative }}g</p>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Reset Button -->
+    <div class="reset-section">
+      <button mat-stroked-button color="warn" (click)="resetApp()">
+        <mat-icon>refresh</mat-icon>
+        Start Over
+      </button>
+    </div>
+  }
+</main>
