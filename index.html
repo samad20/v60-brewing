@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V60 Coffee Brewing Guide</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #8b7355;
+            --primary-dark: #7a6348;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+        
+        .header {
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: var(--primary-color);
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-dark);
+        }
+        
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover, .btn-outline-primary:focus {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .recipe-card {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .step-card {
+            background-color: #fff;
+            border-left: 3px solid #ffd166;
+        }
+        
+        .timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-align: center;
+        }
+        
+        .cumulative {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .timer-controls .btn {
+            flex: 1;
+            max-width: 120px;
+        }
+        
+        .temperature-notice {
+            background-color: #e7f3ff;
+            border-left: 4px solid #0d6efd;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .temperature-notice i {
+            color: #0d6efd;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <div class="header mb-4">
+            <h1 class="display-5 fw-bold">V60 Brewing Guide</h1>
+            <p class="lead text-muted">Follow these steps to brew the perfect V60 coffee</p>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="section-title h4 mb-3">Step 1: Select Your Brew Type</h2>
+                <p class="mb-3">Would you like to make a hot or cold V60 coffee?</p>
+                <div class="d-flex gap-3">
+                    <button class="btn btn-primary flex-fill" id="hotBtn">Hot V60</button>
+                    <button class="btn btn-outline-primary flex-fill" id="coldBtn">Cold V60</button>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="section-title h4 mb-3">Step 2: Select Your Comfort Level</h2>
+                <p class="mb-3">Choose your preferred coffee flavor profile:</p>
+                <div class="d-flex gap-3">
+                    <button class="btn btn-primary flex-fill" id="comfortClassicBtn">Classic</button>
+                    <button class="btn btn-outline-primary flex-fill" id="comfortFruitBtn">Fruit</button>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="section-title h4 mb-3">Step 3: Enter Coffee or Water Amount</h2>
+                <p class="mb-3">Enter either the amount of coffee or water you'd like to use:</p>
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="coffeeInput" class="form-label fw-semibold">Coffee (grams)</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="coffeeInput" placeholder="Enter coffee amount" value="15">
+                            <span class="input-group-text">g</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="waterInput" class="form-label fw-semibold">Water (grams)</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="waterInput" placeholder="Enter water amount" value="225">
+                            <span class="input-group-text">g</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info mt-3">
+                    <small><i class="fas fa-info-circle"></i> You only need to enter one value. The other will be calculated automatically.</small>
+                </div>
+                
+                <button class="btn btn-primary w-100 mt-2" id="calculateBtn">Calculate Recipe</button>
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="section-title h4 mb-3">Step 4: Brewing Instructions</h2>
+                
+                <div id="hotInstructions">
+                    <div class="card recipe-card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">Your Recipe</h5>
+                            <p id="hotRecipe" class="mb-0">
+                                <strong>Coffee:</strong> 15g<br>
+                                <strong>Water:</strong> 225g<br>
+                                <strong>Ratio:</strong> 1:15
+                            </p>
+                            <div class="temperature-notice">
+                                <i class="fas fa-temperature-high"></i>
+                                <strong>Water Temperature:</strong> <span id="hotTemp">Recommended between 88°C and 92°C for optimal extraction</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h5 class="mb-3 fw-semibold">Brewing Steps</h5>
+                    
+                    <div class="card step-card mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title fw-semibold">Step 1: First Pour</h6>
+                            <p id="hotStep1" class="card-text mb-1">Pour 30g of water and wait 30 seconds.</p>
+                            <div class="cumulative" id="hotCumulative1">Total so far: 30g</div>
+                            <div class="timer-controls">
+                                <button class="btn btn-sm btn-outline-primary" id="hotTimer1">Start 30s Timer</button>
+                                <button class="btn btn-sm btn-outline-secondary" id="hotResetTimer1" disabled>Reset Timer</button>
+                            </div>
+                            <div class="timer" id="hotTimerDisplay1"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card step-card mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title fw-semibold">Step 2: Second Pour</h6>
+                            <p id="hotStep2" class="card-text mb-1">Pour 65g of water.</p>
+                            <div class="cumulative" id="hotCumulative2">Total so far: 95g</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card step-card mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title fw-semibold">Step 3: Third Pour</h6>
+                            <p id="hotStep3" class="card-text mb-1">Pour 65g of water.</p>
+                            <div class="cumulative" id="hotCumulative3">Total so far: 160g</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card step-card">
+                        <div class="card-body">
+                            <h6 class="card-title fw-semibold">Step 4: Final Pour</h6>
+                            <p id="hotStep4" class="card-text mb-1">Pour the remaining 65g of water.</p>
+                            <div class="cumulative" id="hotCumulative4">Total: 225g</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="coldInstructions" style="display: none;">
+                    <div class="card recipe-card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">Your Recipe</h5>
+                            <p id="coldRecipe" class="mb-0">
+                                <strong>Coffee:</strong> 15g<br>
+                                <strong>Water:</strong> 113g<br>
+                                <strong>Ice:</strong> 113g<br>
+                                <strong>Ratio:</strong> 1:15
+                            </p>
+                            <div class="temperature-notice">
+                                <i class="fas fa-temperature-high"></i>
+                                <strong>Water Temperature:</strong> <span id="coldTemp">Recommended between 88°C and 92°C for optimal extraction</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h5 class="mb-3 fw-semibold">Brewing Steps</h5>
+                    
+                    <div class="card step-card mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title fw-semibold">Step 1: First Pour</h6>
+                            <p id="coldStep1" class="card-text mb-1">Pour 38g of water and wait 30 seconds.</p>
+                            <div class="cumulative" id="coldCumulative1">Total so far: 38g</div>
+                            <div class="timer-controls">
+                                <button class="btn btn-sm btn-outline-primary" id="coldTimer1">Start 30s Timer</button>
+                                <button class="btn btn-sm btn-outline-secondary" id="coldResetTimer1" disabled>Reset Timer</button>
+                            </div>
+                            <div class="timer" id="coldTimerDisplay1"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="card step-card mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title fw-semibold">Step 2: Second Pour</h6>
+                            <p id="coldStep2" class="card-text mb-1">Pour 38g of water.</p>
+                            <div class="cumulative" id="coldCumulative2">Total so far: 76g</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card step-card">
+                        <div class="card-body">
+                            <h6 class="card-title fw-semibold">Step 3: Third Pour</h6>
+                            <p id="coldStep3" class="card-text mb-1">Pour the remaining 37g of water.</p>
+                            <div class="cumulative" id="coldCumulative3">Total: 113g</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button class="btn btn-outline-secondary" id="resetBtn">Start Over</button>
+        </div>
+        
+        <footer class="text-center mt-4 text-muted">
+            <p>Enjoy your perfect V60 coffee! <i class="fas fa-coffee"></i></p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hotBtn = document.getElementById('hotBtn');
+            const coldBtn = document.getElementById('coldBtn');
+            const comfortClassicBtn = document.getElementById('comfortClassicBtn');
+            const comfortFruitBtn = document.getElementById('comfortFruitBtn');
+            const coffeeInput = document.getElementById('coffeeInput');
+            const waterInput = document.getElementById('waterInput');
+            const calculateBtn = document.getElementById('calculateBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            
+            const hotInstructions = document.getElementById('hotInstructions');
+            const coldInstructions = document.getElementById('coldInstructions');
+            
+            const hotRecipe = document.getElementById('hotRecipe');
+            const coldRecipe = document.getElementById('coldRecipe');
+            
+            const hotStep1 = document.getElementById('hotStep1');
+            const hotStep2 = document.getElementById('hotStep2');
+            const hotStep3 = document.getElementById('hotStep3');
+            const hotStep4 = document.getElementById('hotStep4');
+            
+            const coldStep1 = document.getElementById('coldStep1');
+            const coldStep2 = document.getElementById('coldStep2');
+            const coldStep3 = document.getElementById('coldStep3');
+            
+            const hotCumulative1 = document.getElementById('hotCumulative1');
+            const hotCumulative2 = document.getElementById('hotCumulative2');
+            const hotCumulative3 = document.getElementById('hotCumulative3');
+            const hotCumulative4 = document.getElementById('hotCumulative4');
+            
+            const coldCumulative1 = document.getElementById('coldCumulative1');
+            const coldCumulative2 = document.getElementById('coldCumulative2');
+            const coldCumulative3 = document.getElementById('coldCumulative3');
+            
+            const hotTimer1 = document.getElementById('hotTimer1');
+            const hotResetTimer1 = document.getElementById('hotResetTimer1');
+            const hotTimerDisplay1 = document.getElementById('hotTimerDisplay1');
+            
+            const coldTimer1 = document.getElementById('coldTimer1');
+            const coldResetTimer1 = document.getElementById('coldResetTimer1');
+            const coldTimerDisplay1 = document.getElementById('coldTimerDisplay1');
+            
+            const hotTemp = document.getElementById('hotTemp');
+            const coldTemp = document.getElementById('coldTemp');
+            
+            let brewType = 'hot';
+            let comfortLevel = 'classic';
+            let coffeeAmount = 15;
+            let waterAmount = 225;
+            let inputTimeout = null;
+            let hotTimerInterval = null;
+            let coldTimerInterval = null;
+
+            calculateHotRecipe();
+            
+            hotBtn.addEventListener('click', () => setBrewType('hot'));
+            coldBtn.addEventListener('click', () => setBrewType('cold'));
+            
+            comfortClassicBtn.addEventListener('click', () => setComfortLevel('classic'));
+            comfortFruitBtn.addEventListener('click', () => setComfortLevel('fruit'));
+            
+            coffeeInput.addEventListener('input', () => handleInput('coffee'));
+            waterInput.addEventListener('input', () => handleInput('water'));
+            
+            coffeeInput.addEventListener('blur', () => handleInputChange('coffee'));
+            waterInput.addEventListener('blur', () => handleInputChange('water'));
+            
+            calculateBtn.addEventListener('click', calculateRecipe);
+            resetBtn.addEventListener('click', resetApp);
+            
+            hotTimer1.addEventListener('click', () => startTimer('hot'));
+            hotResetTimer1.addEventListener('click', () => resetTimer('hot'));
+            
+            coldTimer1.addEventListener('click', () => startTimer('cold'));
+            coldResetTimer1.addEventListener('click', () => resetTimer('cold'));
+            
+            function handleInput(field) {
+                if (inputTimeout) clearTimeout(inputTimeout);
+                inputTimeout = setTimeout(() => handleInputChange(field), 500);
+            }
+            
+            function setBrewType(type) {
+                brewType = type;
+                if (type === 'hot') {
+                    hotBtn.classList.remove('btn-outline-primary');
+                    hotBtn.classList.add('btn-primary');
+                    coldBtn.classList.remove('btn-primary');
+                    coldBtn.classList.add('btn-outline-primary');
+                    hotInstructions.style.display = 'block';
+                    coldInstructions.style.display = 'none';
+                } else {
+                    coldBtn.classList.remove('btn-outline-primary');
+                    coldBtn.classList.add('btn-primary');
+                    hotBtn.classList.remove('btn-primary');
+                    hotBtn.classList.add('btn-outline-primary');
+                    hotInstructions.style.display = 'none';
+                    coldInstructions.style.display = 'block';
+                    calculateColdRecipe();
+                }
+                updateTemperature();
+            }
+            
+            function setComfortLevel(level) {
+                comfortLevel = level;
+                if (level === 'classic') {
+                    comfortClassicBtn.classList.remove('btn-outline-primary');
+                    comfortClassicBtn.classList.add('btn-primary');
+                    comfortFruitBtn.classList.remove('btn-primary');
+                    comfortFruitBtn.classList.add('btn-outline-primary');
+                } else {
+                    comfortFruitBtn.classList.remove('btn-outline-primary');
+                    comfortFruitBtn.classList.add('btn-primary');
+                    comfortClassicBtn.classList.remove('btn-primary');
+                    comfortClassicBtn.classList.add('btn-outline-primary');
+                }
+                updateTemperature();
+            }
+            
+            function handleInputChange(changedField) {
+                if (inputTimeout) clearTimeout(inputTimeout);
+                inputTimeout = setTimeout(() => handleInputChange(field), 500);
+            }
+            
+            function updateTemperature() {
+                let tempText;
+                if (comfortLevel === 'fruit') {
+                    tempText = 'Recommended between 92°C and 96°C for enhanced fruit notes';
+                } else {
+                    tempText = 'Recommended between 88°C and 92°C for optimal extraction';
+                }
+                
+                if (brewType === 'hot') {
+                    hotTemp.textContent = tempText;
+                } else {
+                    coldTemp.textContent = tempText;
+                }
+            }
+            
+            function handleInputChange(changedField) {
+                if (changedField === 'coffee' && coffeeInput.value && coffeeInput.value > 0) {
+                    waterInput.value = Math.round(coffeeInput.value * 15);
+                } else if (changedField === 'water' && waterInput.value && waterInput.value > 0) {
+                    coffeeInput.value = Math.round(waterInput.value / 15 * 10) / 10;
+                } else if ((changedField === 'coffee' && !coffeeInput.value) || (changedField === 'water' && !waterInput.value)) {
+                    if (changedField === 'coffee') waterInput.value = '';
+                    else coffeeInput.value = '';
+                }
+            }
+            
+            function calculateRecipe() {
+                coffeeAmount = parseFloat(coffeeInput.value) || 0;
+                waterAmount = parseFloat(waterInput.value) || 0;
+                
+                if (coffeeAmount <= 0 || waterAmount <= 0) {
+                    alert('Please enter valid amounts for both coffee and water.');
+                    return;
+                }
+                
+                if (brewType === 'hot') calculateHotRecipe();
+                else calculateColdRecipe();
+                
+                document.querySelector('.card:last-child').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            
+            function calculateHotRecipe() {
+                const firstPour = coffeeAmount * 2;
+                const remainingWater = waterAmount - firstPour;
+                const secondThirdPour = remainingWater / 3;
+                const fourthPour = remainingWater - (secondThirdPour * 2);
+                
+                const cumulative1 = firstPour;
+                const cumulative2 = cumulative1 + secondThirdPour;
+                const cumulative3 = cumulative2 + secondThirdPour;
+                const cumulative4 = cumulative3 + fourthPour;
+                
+                hotRecipe.innerHTML = `<strong>Coffee:</strong> ${coffeeAmount}g<br><strong>Water:</strong> ${waterAmount}g<br><strong>Ratio:</strong> 1:${Math.round(waterAmount / coffeeAmount)}`;
+                hotStep1.textContent = `Pour ${firstPour}g of water and wait 30 seconds.`;
+                hotStep2.textContent = `Pour ${Math.round(secondThirdPour)}g of water.`;
+                hotStep3.textContent = `Pour ${Math.round(secondThirdPour)}g of water.`;
+                hotStep4.textContent = `Pour the remaining ${Math.round(fourthPour)}g of water.`;
+                
+                hotCumulative1.textContent = `Total so far: ${Math.round(cumulative1)}g`;
+                hotCumulative2.textContent = `Total so far: ${Math.round(cumulative2)}g`;
+                hotCumulative3.textContent = `Total so far: ${Math.round(cumulative3)}g`;
+                hotCumulative4.textContent = `Total: ${Math.round(cumulative4)}g`;
+            }
+            
+            function calculateColdRecipe() {
+                const totalWaterIce = coffeeAmount * 15 / 2;
+                const waterPerPour = totalWaterIce / 3;
+                const waterAmount = Math.round(totalWaterIce);
+                const iceAmount = Math.round(totalWaterIce);
+                
+                const cumulative1 = waterPerPour;
+                const cumulative2 = cumulative1 + waterPerPour;
+                const cumulative3 = cumulative2 + waterPerPour;
+                
+                coldRecipe.innerHTML = `<strong>Coffee:</strong> ${coffeeAmount}g<br><strong>Water:</strong> ${waterAmount}g<br><strong>Ice:</strong> ${iceAmount}g<br><strong>Ratio:</strong> 1:${Math.round((waterAmount + iceAmount) / coffeeAmount)}`;
+                coldStep1.textContent = `Pour ${Math.round(waterPerPour)}g of water and wait 30 seconds.`;
+                coldStep2.textContent = `Pour ${Math.round(waterPerPour)}g of water.`;
+                coldStep3.textContent = `Pour the remaining ${Math.round(waterPerPour)}g of water.`;
+                
+                coldCumulative1.textContent = `Total so far: ${Math.round(cumulative1)}g`;
+                coldCumulative2.textContent = `Total so far: ${Math.round(cumulative2)}g`;
+                coldCumulative3.textContent = `Total: ${Math.round(cumulative3)}g`;
+            }
+            
+            function startTimer(type) {
+                let timerDisplay, timerBtn, resetBtn, timerInterval;
+                
+                if (type === 'hot') {
+                    timerDisplay = hotTimerDisplay1;
+                    timerBtn = hotTimer1;
+                    resetBtn = hotResetTimer1;
+                    timerInterval = hotTimerInterval;
+                } else {
+                    timerDisplay = coldTimerDisplay1;
+                    timerBtn = coldTimer1;
+                    resetBtn = coldResetTimer1;
+                    timerInterval = coldTimerInterval;
+                }
+                
+                if (timerInterval) clearInterval(timerInterval);
+                
+                let timeLeft = 30;
+                timerDisplay.textContent = `00:${timeLeft < 10 ? '0' : ''}${timeLeft}`;
+                timerBtn.disabled = true;
+                resetBtn.disabled = false;
+                
+                if (type === 'hot') {
+                    hotTimerInterval = setInterval(() => {
+                        timeLeft--;
+                        timerDisplay.textContent = `00:${timeLeft < 10 ? '0' : ''}${timeLeft}`;
+                        if (timeLeft <= 0) {
+                            clearInterval(hotTimerInterval);
+                            timerDisplay.textContent = "Time's up!";
+                            timerBtn.disabled = false;
+                        }
+                    }, 1000);
+                } else {
+                    coldTimerInterval = setInterval(() => {
+                        timeLeft--;
+                        timerDisplay.textContent = `00:${timeLeft < 10 ? '0' : ''}${timeLeft}`;
+                        if (timeLeft <= 0) {
+                            clearInterval(coldTimerInterval);
+                            timerDisplay.textContent = "Time's up!";
+                            timerBtn.disabled = false;
+                        }
+                    }, 1000);
+                }
+            }
+            
+            function resetTimer(type) {
+                let timerDisplay, timerBtn, resetBtn, timerInterval;
+                
+                if (type === 'hot') {
+                    timerDisplay = hotTimerDisplay1;
+                    timerBtn = hotTimer1;
+                    resetBtn = hotResetTimer1;
+                    timerInterval = hotTimerInterval;
+                } else {
+                    timerDisplay = coldTimerDisplay1;
+                    timerBtn = coldTimer1;
+                    resetBtn = coldResetTimer1;
+                    timerInterval = coldTimerInterval;
+                }
+                
+                if (timerInterval) clearInterval(timerInterval);
+                timerDisplay.textContent = '';
+                timerBtn.disabled = false;
+                resetBtn.disabled = true;
+            }
+            
+            function resetApp() {
+                coffeeInput.value = 15;
+                waterInput.value = 225;
+                setBrewType('hot');
+                setComfortLevel('classic');
+                calculateHotRecipe();
+                resetTimer('hot');
+                resetTimer('cold');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+    </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"d5cf7fb764864534a02fa0730500e043","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
+
