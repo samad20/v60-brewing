@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 
 type BrewType = 'hot' | 'cold';
-type FlavorProfile = 'fruity-floral' | 'fruity-funky' | 'classic-bold';
+type FlavorProfile = 'fruity-floral' | 'classic-bold';
 type ProcessingMethod = 'washed' | 'natural' | 'anaerobic' | 'infused' | 'natural-honey';
 type OriginAltitude = 'high' | 'medium' | 'low' | 'all';
 
@@ -37,8 +37,6 @@ const PROCESSING_OPTIONS: Record<FlavorProfile, ProcessingOption[]> = {
     { value: 'washed', label: 'Washed', icon: 'water_drop' },
     { value: 'natural', label: 'Natural', icon: 'grass' },
     { value: 'anaerobic', label: 'Anaerobic / Carbonic', icon: 'science' },
-  ],
-  'fruity-funky': [
     { value: 'infused', label: 'Infused / Co-fermented', icon: 'biotech' },
   ],
   'classic-bold': [
@@ -57,7 +55,7 @@ const ORIGIN_OPTIONS: Record<string, OriginOption[]> = {
   'fruity-floral|anaerobic': [
     { value: 'all', label: 'All Origins', description: 'Any origin works', icon: 'public' },
   ],
-  'fruity-funky|infused': [
+  'fruity-floral|infused': [
     { value: 'all', label: 'All Origins', description: 'Any origin works', icon: 'public' },
   ],
   'classic-bold|natural-honey': [
@@ -72,7 +70,7 @@ const TEMP_MAP: Record<string, TempResult> = {
   'fruity-floral|washed|high': { min: 93, max: 95, note: 'Bright, clean fruity/floral notes from washed high-altitude beans' },
   'fruity-floral|natural|high': { min: 91, max: 93, note: 'Sweet, fruity complexity from natural high-altitude beans' },
   'fruity-floral|anaerobic|all': { min: 85, max: 89, note: 'Delicate anaerobic flavors — lower temp preserves unique profiles' },
-  'fruity-funky|infused|all': { min: 85, max: 88, note: 'Exotic infused/co-fermented flavors — brew gently at low temp' },
+  'fruity-floral|infused|all': { min: 85, max: 88, note: 'Exotic infused/co-fermented flavors — brew gently at low temp' },
   'classic-bold|natural-honey|low': { min: 88, max: 90, note: 'Rich, full-bodied cup from natural/honey low-altitude beans' },
   'classic-bold|washed|medium': { min: 90, max: 92, note: 'Classic balanced extraction from washed medium-altitude beans' },
 };

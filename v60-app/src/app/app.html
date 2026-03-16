@@ -33,14 +33,10 @@
       <mat-card-title>Flavor Profile</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mat-button-toggle-group [value]="flavorProfile()" (change)="onFlavorChange($event.value)" class="full-width-toggle flavor-toggle" hideSingleSelectionIndicator>
+      <mat-button-toggle-group [value]="flavorProfile()" (change)="onFlavorChange($event.value)" class="full-width-toggle" hideSingleSelectionIndicator>
         <mat-button-toggle value="fruity-floral">
           <mat-icon>local_florist</mat-icon>
           <span>Fruity / Floral</span>
-        </mat-button-toggle>
-        <mat-button-toggle value="fruity-funky">
-          <mat-icon>eco</mat-icon>
-          <span>Fruity / Funky</span>
         </mat-button-toggle>
         <mat-button-toggle value="classic-bold">
           <mat-icon>coffee</mat-icon>
