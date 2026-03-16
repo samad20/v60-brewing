@@ -26,59 +26,116 @@
     </mat-card-content>
   </mat-card>
 
-  <!-- Step 2: Comfort Level -->
+  <!-- Step 2: Flavor Profile -->
   <mat-card class="step-card" appearance="outlined">
     <mat-card-header>
       <mat-icon mat-card-avatar class="step-icon">looks_two</mat-icon>
-      <mat-card-title>Select Your Comfort Level</mat-card-title>
+      <mat-card-title>Flavor Profile</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mat-button-toggle-group [value]="comfortLevel()" (change)="comfortLevel.set($event.value)" class="full-width-toggle" hideSingleSelectionIndicator>
-        <mat-button-toggle value="classic">
-          <mat-icon>balance</mat-icon>
-          <span>Classic</span>
+      <mat-button-toggle-group [value]="flavorProfile()" (change)="onFlavorChange($event.value)" class="full-width-toggle flavor-toggle" hideSingleSelectionIndicator>
+        <mat-button-toggle value="fruity-floral">
+          <mat-icon>local_florist</mat-icon>
+          <span>Fruity / Floral</span>
         </mat-button-toggle>
-        <mat-button-toggle value="fruit">
+        <mat-button-toggle value="fruity-funky">
           <mat-icon>eco</mat-icon>
-          <span>Fruit</span>
+          <span>Fruity / Funky</span>
+        </mat-button-toggle>
+        <mat-button-toggle value="classic-bold">
+          <mat-icon>coffee</mat-icon>
+          <span>Classic / Bold</span>
         </mat-button-toggle>
       </mat-button-toggle-group>
     </mat-card-content>
   </mat-card>
 
-  <!-- Step 3: Amounts -->
-  <mat-card class="step-card" appearance="outlined">
-    <mat-card-header>
-      <mat-icon mat-card-avatar class="step-icon">looks_3</mat-icon>
-      <mat-card-title>Enter Coffee or Water Amount</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="input-row">
-        <mat-form-field appearance="outline" class="amount-field">
-          <mat-label>Coffee (grams)</mat-label>
-          <input matInput type="number" [value]="coffeeAmount()" (input)="onCoffeeChange($any($event.target).value)" min="1" />
-          <mat-icon matSuffix>coffee_maker</mat-icon>
-        </mat-form-field>
+  <!-- Step 3: Processing Method -->
+  @if (flavorProfile()) {
+    <mat-card class="step-card" appearance="outlined">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="step-icon">looks_3</mat-icon>
+        <mat-card-title>Processing Method</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-button-toggle-group [value]="processingMethod()" (change)="onProcessingChange($event.value)" class="full-width-toggle" hideSingleSelectionIndicator>
+          @for (opt of processingOptions(); track opt.value) {
+            <mat-button-toggle [value]="opt.value">
+              <mat-icon>{{ opt.icon }}</mat-icon>
+              <span>{{ opt.label }}</span>
+            </mat-button-toggle>
+          }
+        </mat-button-toggle-group>
+      </mat-card-content>
+    </mat-card>
+  }
 
-        <mat-form-field appearance="outline" class="amount-field">
-          <mat-label>Water (grams)</mat-label>
-          <input matInput type="number" [value]="waterAmount()" (input)="onWaterChange($any($event.target).value)" min="1" />
-          <mat-icon matSuffix>water_drop</mat-icon>
-        </mat-form-field>
-      </div>
-      <p class="ratio-hint">Ratio: 1:15 (coffee to water)</p>
-      <button mat-flat-button color="primary" class="calculate-btn" (click)="calculateRecipe()">
-        <mat-icon>calculate</mat-icon>
-        Calculate Recipe
-      </button>
-    </mat-card-content>
-  </mat-card>
-
-  <!-- Step 4: Instructions -->
-  @if (recipeCalculated()) {
+  <!-- Step 4: Origin / Altitude -->
+  @if (processingMethod() && originOptions().length > 1) {
     <mat-card class="step-card" appearance="outlined">
       <mat-card-header>
         <mat-icon mat-card-avatar class="step-icon">looks_4</mat-icon>
+        <mat-card-title>Origin / Altitude</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-button-toggle-group [value]="originAltitude()" (change)="onOriginChange($event.value)" class="full-width-toggle" hideSingleSelectionIndicator>
+          @for (opt of originOptions(); track opt.value) {
+            <mat-button-toggle [value]="opt.value">
+              <mat-icon>{{ opt.icon }}</mat-icon>
+              <div class="origin-label">
+                <span>{{ opt.label }}</span>
+                <small>{{ opt.description }}</small>
+              </div>
+            </mat-button-toggle>
+          }
+        </mat-button-toggle-group>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <!-- Origin confirmation when auto-selected -->
+  @if (processingMethod() && originOptions().length === 1 && originAltitude()) {
+    <div class="auto-selected-notice">
+      <mat-icon>info_outline</mat-icon>
+      <span><strong>Origin:</strong> {{ originOptions()[0].label }} ({{ originOptions()[0].description }})</span>
+    </div>
+  }
+
+  <!-- Step 5: Amounts -->
+  @if (originAltitude()) {
+    <mat-card class="step-card" appearance="outlined">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="step-icon">looks_5</mat-icon>
+        <mat-card-title>Enter Coffee or Water Amount</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="input-row">
+          <mat-form-field appearance="outline" class="amount-field">
+            <mat-label>Coffee (grams)</mat-label>
+            <input matInput type="number" [value]="coffeeAmount()" (input)="onCoffeeChange($any($event.target).value)" min="1" />
+            <mat-icon matSuffix>coffee_maker</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="amount-field">
+            <mat-label>Water (grams)</mat-label>
+            <input matInput type="number" [value]="waterAmount()" (input)="onWaterChange($any($event.target).value)" min="1" />
+            <mat-icon matSuffix>water_drop</mat-icon>
+          </mat-form-field>
+        </div>
+        <p class="ratio-hint">Ratio: 1:15 (coffee to water)</p>
+        <button mat-flat-button color="primary" class="calculate-btn" (click)="calculateRecipe()">
+          <mat-icon>calculate</mat-icon>
+          Calculate Recipe
+        </button>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <!-- Step 6: Instructions -->
+  @if (recipeCalculated()) {
+    <mat-card class="step-card" appearance="outlined">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="step-icon">looks_6</mat-icon>
         <mat-card-title>Brewing Instructions</mat-card-title>
       </mat-card-header>
       <mat-card-content>
@@ -86,8 +143,8 @@
         <div class="temperature-notice">
           <mat-icon>thermostat</mat-icon>
           <div>
-            <strong>Recommended Temperature: {{ temperature().min }}°C – {{ temperature().max }}°C</strong>
-            <p>{{ temperature().note }}</p>
+            <strong>Recommended Temperature: {{ temperature()?.min }}°C – {{ temperature()?.max }}°C</strong>
+            <p>{{ temperature()?.note }}</p>
           </div>
         </div>
 
