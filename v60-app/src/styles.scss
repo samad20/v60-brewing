@@ -27,7 +27,12 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-// Safe area insets for notched devices (iPhone X+)
+// Fix double borders on vertically stacked toggle buttons (mobile)
+@media (max-width: 480px) {
+  .dynamic-toggle .mat-button-toggle + .mat-button-toggle {
+    border-left: none;
+  }
+}
 :root {
   --safe-area-top: env(safe-area-inset-top, 0px);
   --safe-area-bottom: env(safe-area-inset-bottom, 0px);
