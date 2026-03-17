@@ -29,8 +29,8 @@ body {
 
 // Fix double borders on vertically stacked toggle buttons (mobile)
 @media (max-width: 480px) {
-  .dynamic-toggle .mat-button-toggle + .mat-button-toggle {
-    border-left: none;
+  .dynamic-toggle .mat-button-toggle {
+    border-width: 0;
   }
 }
 :root {
