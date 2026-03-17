@@ -29,7 +29,7 @@ body {
 
 // Fix double borders on toggle buttons
 .mat-button-toggle.mat-button-toggle-appearance-standard {
-  border-width: 0;
+  border-width: 0 !important;
 }
 :root {
   --safe-area-top: env(safe-area-inset-top, 0px);
