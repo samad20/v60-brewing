@@ -54,7 +54,7 @@
         <mat-card-title>Processing Method</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <mat-button-toggle-group [value]="processingMethod()" (change)="onProcessingChange($event.value)" class="full-width-toggle" hideSingleSelectionIndicator>
+        <mat-button-toggle-group [value]="processingMethod()" (change)="onProcessingChange($event.value)" class="full-width-toggle dynamic-toggle" hideSingleSelectionIndicator>
           @for (opt of processingOptions(); track opt.value) {
             <mat-button-toggle [value]="opt.value">
               <mat-icon>{{ opt.icon }}</mat-icon>
@@ -74,7 +74,7 @@
         <mat-card-title>Origin / Altitude</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <mat-button-toggle-group [value]="originAltitude()" (change)="onOriginChange($event.value)" class="full-width-toggle" hideSingleSelectionIndicator>
+        <mat-button-toggle-group [value]="originAltitude()" (change)="onOriginChange($event.value)" class="full-width-toggle dynamic-toggle" hideSingleSelectionIndicator>
           @for (opt of originOptions(); track opt.value) {
             <mat-button-toggle [value]="opt.value">
               <mat-icon>{{ opt.icon }}</mat-icon>
