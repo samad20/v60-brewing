@@ -27,11 +27,9 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-// Fix double borders on vertically stacked toggle buttons (mobile)
-@media (max-width: 480px) {
-  .dynamic-toggle .mat-button-toggle {
-    border-width: 0;
-  }
+// Fix double borders on toggle buttons
+.mat-button-toggle.mat-button-toggle-appearance-standard {
+  border-width: 0;
 }
 :root {
   --safe-area-top: env(safe-area-inset-top, 0px);
