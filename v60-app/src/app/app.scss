@@ -319,6 +319,10 @@ $accent-yellow: #ffd166;
     mat-button-toggle {
       flex: none;
       width: 100%;
+
+      + mat-button-toggle {
+        border-top: none;
+      }
     }
   }
 
