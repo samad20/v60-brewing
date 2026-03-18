@@ -246,6 +246,16 @@ $accent-yellow: #ffd166;
   font-weight: 600;
   color: $primary;
   margin: 1.5rem 0 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  .enjoy-icon {
+    font-size: 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 }
 
 .pour-steps {
