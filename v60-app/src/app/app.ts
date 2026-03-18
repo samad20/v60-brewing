@@ -35,7 +35,7 @@ interface TempResult {
 const PROCESSING_OPTIONS: Record<FlavorProfile, ProcessingOption[]> = {
   'fruity-floral': [
     { value: 'washed', label: 'Washed', icon: 'water_drop' },
-    { value: 'natural', label: 'Natural', icon: 'grass' },
+    { value: 'natural', label: 'Natural', icon: 'spa' },
     { value: 'anaerobic', label: 'Anaerobic / Carbonic', icon: 'science' },
     { value: 'infused', label: 'Infused / Co-fermented', icon: 'biotech' },
   ],
