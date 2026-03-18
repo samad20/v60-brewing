@@ -102,8 +102,8 @@ export class App implements OnDestroy {
   flavorProfile = signal<FlavorProfile | null>(null);
   processingMethod = signal<ProcessingMethod | null>(null);
   originAltitude = signal<OriginAltitude | null>(null);
-  coffeeAmount = signal(15);
-  waterAmount = signal(225);
+  coffeeAmount = signal(20);
+  waterAmount = signal(300);
   recipeCalculated = signal(false);
 
   // Timer state
@@ -280,8 +280,8 @@ export class App implements OnDestroy {
     this.flavorProfile.set(null);
     this.processingMethod.set(null);
     this.originAltitude.set(null);
-    this.coffeeAmount.set(15);
-    this.waterAmount.set(225);
+    this.coffeeAmount.set(20);
+    this.waterAmount.set(300);
     this.recipeCalculated.set(false);
     this.resetTimer();
     window.scrollTo({ top: 0, behavior: 'smooth' });
