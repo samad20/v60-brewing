@@ -240,6 +240,14 @@ $accent-yellow: #ffd166;
 }
 
 // Pour steps
+.enjoy-message {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: $primary;
+  margin: 1.5rem 0 0.5rem;
+}
+
 .pour-steps {
   padding: 1rem 0 0;
 
