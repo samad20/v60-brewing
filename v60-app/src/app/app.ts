@@ -40,7 +40,7 @@ const PROCESSING_OPTIONS: Record<FlavorProfile, ProcessingOption[]> = {
     { value: 'infused', label: 'Infused / Co-fermented', icon: 'biotech' },
   ],
   'classic-bold': [
-    { value: 'natural-honey', label: 'Natural / Honey', icon: 'honeycomb' },
+    { value: 'natural-honey', label: 'Natural / Honey', icon: 'spa' },
     { value: 'washed', label: 'Washed', icon: 'water_drop' },
   ],
 };
