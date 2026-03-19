@@ -221,6 +221,24 @@
                   <p class="cumulative">Cumulative: {{ step.cumulative }}g</p>
                 </div>
               </div>
+              @if (step.label === 'Pour 1') {
+                <!-- Bloom Timer -->
+                <div class="timer-section">
+                  <div class="timer-display" [class.timer-done]="timerDone">
+                    {{ timerDone ? "Time's up!" : timerDisplay }}
+                  </div>
+                  <div class="timer-controls">
+                    <button mat-flat-button color="primary" (click)="startTimer()" [disabled]="timerRunning() || timerDone">
+                      <mat-icon>play_arrow</mat-icon>
+                      Start
+                    </button>
+                    <button mat-stroked-button (click)="resetTimer()">
+                      <mat-icon>replay</mat-icon>
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              }
             }
           }
         </div>
