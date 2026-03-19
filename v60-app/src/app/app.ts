@@ -218,12 +218,23 @@ export class App implements OnDestroy {
     const halfTotal = Math.round(water / 2);
     this.iceAmount.set(halfTotal);
     this.coldWaterAmount.set(halfTotal);
-    const coldPourAmount = Math.round(halfTotal / 3);
 
-    let coldCumulative = 0;
-    const coldSteps: PourStep[] = [];
-    for (let i = 1; i <= 3; i++) {
-      const amt = i === 3 ? halfTotal - coldCumulative : coldPourAmount;
+    const coldFirstPour = coffee * 2;
+    let coldCumulative = coldFirstPour;
+    const coldRemaining = halfTotal - coldFirstPour;
+    const coldPourAmount = Math.round(coldRemaining / 2);
+
+    const coldSteps: PourStep[] = [
+      {
+        label: 'Bloom',
+        amount: coldFirstPour,
+        cumulative: coldFirstPour,
+        description: `Pour ${coldFirstPour}g of water for the bloom. Wait 30 seconds.`,
+      },
+    ];
+
+    for (let i = 1; i <= 2; i++) {
+      const amt = i === 2 ? halfTotal - coldCumulative : coldPourAmount;
       coldCumulative += amt;
       coldSteps.push({
         label: `Pour ${i}`,
