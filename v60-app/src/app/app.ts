@@ -104,6 +104,7 @@ export class App implements OnDestroy {
   originAltitude = signal<OriginAltitude | null>(null);
   coffeeAmount = signal(20);
   waterAmount = signal(300);
+  ratio = signal(15);
   recipeCalculated = signal(false);
 
   // Timer state
@@ -169,7 +170,7 @@ export class App implements OnDestroy {
     const coffee = parseFloat(value);
     if (!isNaN(coffee) && coffee > 0) {
       this.coffeeAmount.set(coffee);
-      this.waterAmount.set(Math.round(coffee * 15));
+      this.waterAmount.set(Math.round(coffee * this.ratio()));
     }
   }
 
@@ -177,7 +178,15 @@ export class App implements OnDestroy {
     const water = parseFloat(value);
     if (!isNaN(water) && water > 0) {
       this.waterAmount.set(water);
-      this.coffeeAmount.set(Math.round(water / 15));
+      this.coffeeAmount.set(Math.round(water / this.ratio()));
+    }
+  }
+
+  onRatioChange(value: string): void {
+    const r = parseFloat(value);
+    if (!isNaN(r) && r > 0) {
+      this.ratio.set(r);
+      this.waterAmount.set(Math.round(this.coffeeAmount() * r));
     }
   }
 
@@ -292,6 +301,7 @@ export class App implements OnDestroy {
     this.processingMethod.set(null);
     this.originAltitude.set(null);
     this.coffeeAmount.set(20);
+    this.ratio.set(15);
     this.waterAmount.set(300);
     this.recipeCalculated.set(false);
     this.resetTimer();
