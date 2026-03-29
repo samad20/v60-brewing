@@ -37,3 +37,68 @@ body {
   --safe-area-left: env(safe-area-inset-left, 0px);
   --safe-area-right: env(safe-area-inset-right, 0px);
 }
+
+// Print styles — A4 portrait
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 1.5cm;
+  }
+
+  body {
+    background: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  // Hide non-recipe content
+  .app-header .subtitle,
+  .step-card:not(:last-of-type),
+  .reset-section,
+  .timer-section,
+  .auto-selected-notice,
+  mat-divider {
+    display: none !important;
+  }
+
+  // Keep header compact
+  .app-header {
+    background: none !important;
+    color: #333 !important;
+    padding: 0 0 0.5rem !important;
+    border-bottom: 2px solid #8b7355;
+
+    .header-icon {
+      display: none;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      color: #8b7355 !important;
+    }
+  }
+
+  // Clean up card for print
+  .app-content {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .step-card {
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+  }
+
+  .recipe-summary .recipe-item {
+    border: 1px solid #ccc;
+  }
+
+  .pour-step {
+    break-inside: avoid;
+  }
+
+  .enjoy-message {
+    margin-top: 2rem !important;
+  }
+}

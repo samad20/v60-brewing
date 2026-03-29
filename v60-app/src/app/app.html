@@ -251,8 +251,12 @@
       </mat-card-content>
     </mat-card>
 
-    <!-- Reset Button -->
+    <!-- Action Buttons -->
     <div class="reset-section">
+      <button mat-flat-button color="primary" (click)="printRecipe()">
+        <mat-icon>print</mat-icon>
+        Print Recipe
+      </button>
       <button mat-stroked-button color="warn" (click)="resetApp()">
         <mat-icon>refresh</mat-icon>
         Start Over

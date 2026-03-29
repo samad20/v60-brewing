@@ -295,6 +295,10 @@ export class App implements OnDestroy {
     return this.timerSeconds() === 0 && !this.timerRunning();
   }
 
+  printRecipe(): void {
+    window.print();
+  }
+
   resetApp(): void {
     this.brewType.set('hot');
     this.flavorProfile.set(null);
