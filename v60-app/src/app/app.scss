@@ -308,10 +308,13 @@ $accent-yellow: #ffd166;
   }
 }
 
-// Reset section
+// Action buttons section
 .reset-section {
   text-align: center;
   padding: 1rem 0 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
 }
 
 // Responsive: phones
