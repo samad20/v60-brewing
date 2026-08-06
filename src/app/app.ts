@@ -151,7 +151,7 @@ const I18N: Record<Lang, Record<string, string>> = {
     cold_v60: 'V60 بارد',
     step2_title: 'نوع المحصول',
     fruity_floral: 'فاكهي',
-    classic_bold: 'كلاسيكي / قوي',
+    classic_bold: 'كلاسيكي',
     step3_title: 'طريقة المعالجة',
     proc_washed: 'مغسول',
     proc_natural: 'طبيعي/مجفف',
