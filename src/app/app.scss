@@ -7,26 +7,60 @@ $accent-yellow: #ffd166;
   background: linear-gradient(135deg, $primary, $primary-dark);
   color: #fff;
   text-align: center;
-  padding: 2rem 1rem;
-  padding-top: calc(2rem + var(--safe-area-top));
+  padding: 1rem 0.75rem 1.25rem;
+  padding-top: calc(0.75rem + var(--safe-area-top));
+  position: relative;
+
+  .lang-switcher {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.75rem;
+
+    mat-button-toggle-group {
+      background: rgba(255, 255, 255, 0.15);
+      height: 44px;
+      direction: ltr;
+    }
+
+    mat-button-toggle {
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.85rem;
+      min-width: 96px;
+
+      .mat-button-toggle-label-content {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-bottom: 6px;
+        line-height: 1;
+        height: 100%;
+      }
+
+      &.mat-button-toggle-checked {
+        background: rgba(0, 0, 0, 0.35);
+        color: #fff;
+      }
+    }
+  }
 
   .header-icon {
-    font-size: 48px;
-    width: 48px;
-    height: 48px;
-    margin-bottom: 0.5rem;
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0.25rem;
   }
 
   h1 {
     margin: 0;
-    font-size: 1.75rem;
+    font-size: 1.35rem;
     font-weight: 500;
   }
 
   .subtitle {
-    margin: 0.5rem 0 0;
+    margin: 0.25rem 0 0;
     opacity: 0.9;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
   }
 }
 
@@ -43,7 +77,7 @@ $accent-yellow: #ffd166;
 // Step cards
 .step-card {
   margin-bottom: 1rem;
-  border-left: 4px solid $accent-yellow;
+  border-inline-start: 4px solid $accent-yellow;
 
   mat-card-header {
     .step-icon {

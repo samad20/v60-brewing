@@ -1,8 +1,14 @@
 <!-- Header -->
 <header class="app-header">
   <mat-icon class="header-icon">coffee</mat-icon>
-  <h1>V60 Coffee Brewing Guide</h1>
-  <p class="subtitle">Follow these steps to brew the perfect V60 coffee</p>
+  <h1>{{ t('header_title') }}</h1>
+  <p class="subtitle">{{ t('header_subtitle') }}</p>
+  <div class="lang-switcher">
+    <mat-button-toggle-group [value]="language()" (change)="setLanguage($event.value)" hideSingleSelectionIndicator>
+      <mat-button-toggle value="en">{{ t('lang_en') }}</mat-button-toggle>
+      <mat-button-toggle value="ar">{{ t('lang_ar') }}</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
 </header>
 
 <main class="app-content">
@@ -10,17 +16,17 @@
   <mat-card class="step-card" appearance="outlined">
     <mat-card-header>
       <mat-icon mat-card-avatar class="step-icon">looks_one</mat-icon>
-      <mat-card-title>Select Your Brew Type</mat-card-title>
+      <mat-card-title>{{ t('step1_title') }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <mat-button-toggle-group [value]="brewType()" (change)="brewType.set($event.value)" class="full-width-toggle" hideSingleSelectionIndicator>
         <mat-button-toggle value="hot">
           <mat-icon>local_fire_department</mat-icon>
-          <span>Hot V60</span>
+          <span>{{ t('hot_v60') }}</span>
         </mat-button-toggle>
         <mat-button-toggle value="cold">
           <mat-icon>ac_unit</mat-icon>
-          <span>Cold V60</span>
+          <span>{{ t('cold_v60') }}</span>
         </mat-button-toggle>
       </mat-button-toggle-group>
     </mat-card-content>
@@ -30,22 +36,22 @@
   <mat-card class="step-card" appearance="outlined">
     <mat-card-header>
       <mat-icon mat-card-avatar class="step-icon">looks_two</mat-icon>
-      <mat-card-title>Flavor Profile</mat-card-title>
+      <mat-card-title>{{ t('step2_title') }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <mat-button-toggle-group [value]="flavorProfile()" (change)="onFlavorChange($event.value)" class="full-width-toggle" hideSingleSelectionIndicator>
         <mat-button-toggle value="fruity-floral">
           <mat-icon>local_florist</mat-icon>
-          <span>Fruity / Floral</span>
+          <span>{{ t('fruity_floral') }}</span>
         </mat-button-toggle>
         <mat-button-toggle value="classic-bold">
           <mat-icon>coffee</mat-icon>
-          <span>Classic / Bold</span>
+          <span>{{ t('classic_bold') }}</span>
         </mat-button-toggle>
       </mat-button-toggle-group>
       <button mat-stroked-button class="skip-btn" (click)="skipFlavor()">
         <mat-icon>skip_next</mat-icon>
-        Skip
+        {{ t('skip') }}
       </button>
     </mat-card-content>
   </mat-card>
@@ -55,20 +61,20 @@
     <mat-card class="step-card" appearance="outlined">
       <mat-card-header>
         <mat-icon mat-card-avatar class="step-icon">looks_3</mat-icon>
-        <mat-card-title>Processing Method</mat-card-title>
+        <mat-card-title>{{ t('step3_title') }}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <mat-button-toggle-group [value]="processingMethod()" (change)="onProcessingChange($event.value)" class="full-width-toggle dynamic-toggle" hideSingleSelectionIndicator>
           @for (opt of processingOptions(); track opt.value) {
             <mat-button-toggle [value]="opt.value">
               <mat-icon>{{ opt.icon }}</mat-icon>
-              <span>{{ opt.label }}</span>
+              <span>{{ t(opt.labelKey) }}</span>
             </mat-button-toggle>
           }
         </mat-button-toggle-group>
         <button mat-stroked-button class="skip-btn" (click)="skipProcessing()">
           <mat-icon>skip_next</mat-icon>
-          Skip
+          {{ t('skip') }}
         </button>
       </mat-card-content>
     </mat-card>
@@ -79,7 +85,7 @@
     <mat-card class="step-card" appearance="outlined">
       <mat-card-header>
         <mat-icon mat-card-avatar class="step-icon">looks_4</mat-icon>
-        <mat-card-title>Origin / Altitude</mat-card-title>
+        <mat-card-title>{{ t('step4_title') }}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <mat-button-toggle-group [value]="originAltitude()" (change)="onOriginChange($event.value)" class="full-width-toggle dynamic-toggle" hideSingleSelectionIndicator>
@@ -87,8 +93,8 @@
             <mat-button-toggle [value]="opt.value">
               <mat-icon>{{ opt.icon }}</mat-icon>
               <div class="origin-label">
-                <span>{{ opt.label }}</span>
-                <small>{{ opt.description }}</small>
+                <span>{{ t(opt.labelKey) }}</span>
+                <small>{{ t(opt.descriptionKey) }}</small>
               </div>
             </mat-button-toggle>
           }
@@ -101,7 +107,7 @@
   @if (processingMethod() && originOptions().length === 1 && originAltitude() && !skipDetails()) {
     <div class="auto-selected-notice">
       <mat-icon>info_outline</mat-icon>
-      <span><strong>Origin:</strong> {{ originOptions()[0].label }} ({{ originOptions()[0].description }})</span>
+      <span><strong>{{ t('origin_notice_label') }}</strong> {{ t(originOptions()[0].labelKey) }} ({{ t(originOptions()[0].descriptionKey) }})</span>
     </div>
   }
 
@@ -110,31 +116,31 @@
     <mat-card class="step-card" appearance="outlined">
       <mat-card-header>
         <mat-icon mat-card-avatar class="step-icon">{{ stepIcon(amountsStepNumber()) }}</mat-icon>
-        <mat-card-title>Enter Coffee or Water Amount</mat-card-title>
+        <mat-card-title>{{ t('step5_title') }}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <div class="input-row">
           <mat-form-field appearance="outline" class="amount-field">
-            <mat-label>Coffee (grams)</mat-label>
+            <mat-label>{{ t('coffee_grams') }}</mat-label>
             <input matInput type="number" [value]="coffeeAmount()" (input)="onCoffeeChange($any($event.target).value)" min="1" />
             <mat-icon matSuffix>coffee_maker</mat-icon>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="amount-field">
-            <mat-label>Water (grams)</mat-label>
+            <mat-label>{{ t('water_grams') }}</mat-label>
             <input matInput type="number" [value]="waterAmount()" (input)="onWaterChange($any($event.target).value)" min="1" />
             <mat-icon matSuffix>water_drop</mat-icon>
           </mat-form-field>
           <mat-form-field appearance="outline" class="amount-field">
-            <mat-label>Ratio (1:X)</mat-label>
+            <mat-label>{{ t('ratio_1x') }}</mat-label>
             <input matInput type="number" [value]="ratio()" (input)="onRatioChange($any($event.target).value)" min="1" step="0.5" />
             <mat-icon matSuffix>straighten</mat-icon>
           </mat-form-field>
         </div>
-        <p class="ratio-hint">Ratio: 1:{{ ratio() }} (coffee to water)</p>
+        <p class="ratio-hint">{{ t('ratio_hint', { ratio: ratio() }) }}</p>
         <button mat-flat-button color="primary" class="calculate-btn" (click)="calculateRecipe()">
           <mat-icon>calculate</mat-icon>
-          Calculate Recipe
+          {{ t('calculate_recipe') }}
         </button>
       </mat-card-content>
     </mat-card>
@@ -145,7 +151,7 @@
     <mat-card class="step-card" appearance="outlined">
       <mat-card-header>
         <mat-icon mat-card-avatar class="step-icon">{{ stepIcon(instructionsStepNumber()) }}</mat-icon>
-        <mat-card-title>Brewing Instructions</mat-card-title>
+        <mat-card-title>{{ t('step6_title') }}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <!-- Temperature Notice -->
@@ -153,8 +159,8 @@
           <div class="temperature-notice">
             <mat-icon>thermostat</mat-icon>
             <div>
-              <strong>Recommended Temperature: {{ temperature()?.min }}°C – {{ temperature()?.max }}°C</strong>
-              <p>{{ temperature()?.note }}</p>
+              <strong>{{ t('recommended_temp', { min: temperature()!.min, max: temperature()!.max }) }}</strong>
+              <p>{{ t(temperature()!.noteKey) }}</p>
             </div>
           </div>
         }
@@ -164,37 +170,37 @@
           @if (flavorLabel()) {
             <div class="recipe-item">
               <mat-icon>local_florist</mat-icon>
-              <span><strong>Flavor:</strong> {{ flavorLabel() }}</span>
+              <span><strong>{{ t('flavor_label') }}</strong> {{ flavorLabel() }}</span>
             </div>
           }
           @if (processingLabel()) {
             <div class="recipe-item">
               <mat-icon>spa</mat-icon>
-              <span><strong>Processing:</strong> {{ processingLabel() }}</span>
+              <span><strong>{{ t('processing_label') }}</strong> {{ processingLabel() }}</span>
             </div>
           }
           <div class="recipe-item">
             <mat-icon>coffee_maker</mat-icon>
-            <span><strong>Coffee:</strong> {{ coffeeAmount() }}g</span>
+            <span><strong>{{ t('coffee_label') }}</strong> {{ coffeeAmount() }}g</span>
           </div>
           @if (brewType() === 'hot') {
             <div class="recipe-item">
               <mat-icon>water_drop</mat-icon>
-              <span><strong>Water:</strong> {{ waterAmount() }}g</span>
+              <span><strong>{{ t('water_label') }}</strong> {{ waterAmount() }}g</span>
             </div>
           } @else {
             <div class="recipe-item">
               <mat-icon>water_drop</mat-icon>
-              <span><strong>Water:</strong> {{ coldWaterAmount() }}g</span>
+              <span><strong>{{ t('water_label') }}</strong> {{ coldWaterAmount() }}g</span>
             </div>
             <div class="recipe-item">
               <mat-icon>ac_unit</mat-icon>
-              <span><strong>Ice:</strong> {{ iceAmount() }}g</span>
+              <span><strong>{{ t('ice_label') }}</strong> {{ iceAmount() }}g</span>
             </div>
           }
           <div class="recipe-item">
             <mat-icon>straighten</mat-icon>
-            <span><strong>Ratio:</strong> 1:{{ ratio() }}</span>
+            <span><strong>{{ t('ratio_label') }}</strong> 1:{{ ratio() }}</span>
           </div>
         </div>
 
@@ -204,30 +210,30 @@
 
         <!-- Pour Steps -->
         <div class="pour-steps">
-          <h3>Pouring Steps</h3>
+          <h3>{{ t('pouring_steps') }}</h3>
           @if (brewType() === 'hot') {
-            @for (step of hotSteps(); track step.label) {
+            @for (step of hotSteps(); track $index) {
               <div class="pour-step">
-                <div class="step-label">{{ step.label }}</div>
+                <div class="step-label">{{ stepLabel(step) }}</div>
                 <div class="step-detail">
-                  <p>{{ step.description }}</p>
-                  <p class="cumulative">Cumulative: {{ step.cumulative }}g</p>
+                  <p>{{ stepDescription(step) }}</p>
+                  <p class="cumulative">{{ t('cumulative', { amount: step.cumulative }) }}</p>
                 </div>
               </div>
-              @if (step.label === 'Bloom') {
+              @if (step.labelKey === 'bloom') {
                 <!-- Bloom Timer -->
                 <div class="timer-section">
                   <div class="timer-display" [class.timer-done]="timerDone">
-                    {{ timerDone ? "Time's up!" : timerDisplay }}
+                    {{ timerDone ? t('time_up') : timerDisplay }}
                   </div>
                   <div class="timer-controls">
                     <button mat-flat-button color="primary" (click)="startTimer()" [disabled]="timerRunning() || timerDone">
                       <mat-icon>play_arrow</mat-icon>
-                      Start
+                      {{ t('start') }}
                     </button>
                     <button mat-stroked-button (click)="resetTimer()">
                       <mat-icon>replay</mat-icon>
-                      Reset
+                      {{ t('reset') }}
                     </button>
                   </div>
                 </div>
@@ -235,33 +241,33 @@
             }
           } @else {
             <div class="pour-step ice-step">
-              <div class="step-label">Ice</div>
+              <div class="step-label">{{ t('ice_step') }}</div>
               <div class="step-detail">
-                <p>Place {{ iceAmount() }}g of ice in your server/carafe.</p>
+                <p>{{ t('ice_desc', { amount: iceAmount() }) }}</p>
               </div>
             </div>
-            @for (step of coldSteps(); track step.label) {
+            @for (step of coldSteps(); track $index) {
               <div class="pour-step">
-                <div class="step-label">{{ step.label }}</div>
+                <div class="step-label">{{ stepLabel(step) }}</div>
                 <div class="step-detail">
-                  <p>{{ step.description }}</p>
-                  <p class="cumulative">Cumulative: {{ step.cumulative }}g</p>
+                  <p>{{ stepDescription(step) }}</p>
+                  <p class="cumulative">{{ t('cumulative', { amount: step.cumulative }) }}</p>
                 </div>
               </div>
-              @if (step.label === 'Bloom') {
+              @if (step.labelKey === 'bloom') {
                 <!-- Bloom Timer -->
                 <div class="timer-section">
                   <div class="timer-display" [class.timer-done]="timerDone">
-                    {{ timerDone ? "Time's up!" : timerDisplay }}
+                    {{ timerDone ? t('time_up') : timerDisplay }}
                   </div>
                   <div class="timer-controls">
                     <button mat-flat-button color="primary" (click)="startTimer()" [disabled]="timerRunning() || timerDone">
                       <mat-icon>play_arrow</mat-icon>
-                      Start
+                      {{ t('start') }}
                     </button>
                     <button mat-stroked-button (click)="resetTimer()">
                       <mat-icon>replay</mat-icon>
-                      Reset
+                      {{ t('reset') }}
                     </button>
                   </div>
                 </div>
@@ -269,7 +275,7 @@
             }
           }
         </div>
-        <p class="enjoy-message">Enjoy your coffee <mat-icon class="enjoy-icon">coffee</mat-icon></p>
+        <p class="enjoy-message">{{ t('enjoy') }} <mat-icon class="enjoy-icon">coffee</mat-icon></p>
       </mat-card-content>
     </mat-card>
 
@@ -277,11 +283,11 @@
     <div class="reset-section">
       <button mat-flat-button color="primary" (click)="printRecipe()">
         <mat-icon>print</mat-icon>
-        Print Recipe
+        {{ t('print_recipe') }}
       </button>
       <button mat-stroked-button color="warn" (click)="resetApp()">
         <mat-icon>refresh</mat-icon>
-        Start Over
+        {{ t('start_over') }}
       </button>
     </div>
   }
