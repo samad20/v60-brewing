@@ -215,6 +215,8 @@ interface PourStep {
   descriptionKey: string;
 }
 
+const LANG_KEY = 'v60-lang';
+
 @Component({
   selector: 'app-root',
   imports: [
@@ -231,7 +233,23 @@ interface PourStep {
   styleUrl: './app.scss',
 })
 export class App implements OnDestroy {
-  language = signal<Lang>('en');
+  language = signal<Lang>(this.readStoredLang());
+
+  constructor() {
+    this.applyDocumentLang(this.language());
+  }
+
+  private readStoredLang(): Lang {
+    if (typeof localStorage === 'undefined') return 'ar';
+    const stored = localStorage.getItem(LANG_KEY);
+    return stored === 'ar' || stored === 'en' ? stored : 'ar';
+  }
+
+  private applyDocumentLang(lang: Lang): void {
+    if (typeof document === 'undefined') return;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = lang;
+  }
   brewType = signal<BrewType>('hot');
   flavorProfile = signal<FlavorProfile | null>(null);
   processingMethod = signal<ProcessingMethod | null>(null);
@@ -263,9 +281,9 @@ export class App implements OnDestroy {
 
   setLanguage(lang: Lang): void {
     this.language.set(lang);
-    if (typeof document !== 'undefined') {
-      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-      document.documentElement.lang = lang;
+    this.applyDocumentLang(lang);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(LANG_KEY, lang);
     }
   }
 
@@ -326,13 +344,6 @@ export class App implements OnDestroy {
 
   skipFlavor(): void {
     this.flavorProfile.set(null);
-    this.processingMethod.set(null);
-    this.originAltitude.set(null);
-    this.skipDetails.set(true);
-    this.recipeCalculated.set(false);
-  }
-
-  skipProcessing(): void {
     this.processingMethod.set(null);
     this.originAltitude.set(null);
     this.skipDetails.set(true);
