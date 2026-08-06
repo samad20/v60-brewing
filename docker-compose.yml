@@ -1,0 +1,8 @@
+services:
+  v60-brewing:
+    build: .
+    image: v60-brewing:latest
+    container_name: v60-brewing
+    ports:
+      - "80:80"
+    restart: unless-stopped

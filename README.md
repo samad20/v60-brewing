@@ -1,59 +1,66 @@
-# V60App
+# V60 Coffee Brewing Guide
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.2.
+An Angular Material app that walks you through a V60 pour-over recipe — hot or cold, with English and Arabic (RTL) support.
 
-## Development server
-
-To start a local development server, run:
+## Development
 
 ```bash
-ng serve
+npm install
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The dev server runs on `http://localhost:4200/` with hot reload.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Production build
 
 ```bash
-ng generate component component-name
+npm run build
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Output goes to `dist/v60-app/browser/`.
+
+## Deploy with Docker
+
+The repo ships a multi-stage `Dockerfile` (Node build → nginx serve) and an `nginx.conf` that includes SPA fallback so client-side routes resolve correctly. The container listens on **port 80**.
+
+Build the image:
 
 ```bash
-ng generate --help
+docker build -t v60-brewing .
 ```
 
-## Building
-
-To build the project run:
+Run it, mapping host port 80 to the container:
 
 ```bash
-ng build
+docker run -d --name v60-brewing -p 80:80 v60-brewing
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Open `http://localhost/`. To use a different host port, change the left side of `-p`, e.g. `-p 8080:80` and browse `http://localhost:8080/`.
 
-## Running unit tests
+## Deploy with Docker Compose
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+A `docker-compose.yml` is included. It builds the image from the local `Dockerfile` and exposes port 80.
+
+Start the stack:
 
 ```bash
-ng test
+docker compose up -d
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+Rebuild after code changes:
 
 ```bash
-ng e2e
+docker compose up -d --build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+View logs:
 
-## Additional Resources
+```bash
+docker compose logs -f
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Stop and remove the container:
+
+```bash
+docker compose down
+```
