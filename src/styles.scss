@@ -31,6 +31,12 @@ body {
 .mat-button-toggle.mat-button-toggle-appearance-standard {
   border-width: 0 !important;
 }
+
+// Arabic font — apply to everything except the EN/AR toggle labels
+html[lang='ar'],
+html[lang='ar'] *:not(mat-icon):not(.material-icons):not(.lang-switcher *) {
+  font-family: 'Noto Kufi Arabic', 'Roboto', sans-serif !important;
+}
 :root {
   --safe-area-top: env(safe-area-inset-top, 0px);
   --safe-area-bottom: env(safe-area-inset-bottom, 0px);
