@@ -43,11 +43,15 @@
           <span>Classic / Bold</span>
         </mat-button-toggle>
       </mat-button-toggle-group>
+      <button mat-stroked-button class="skip-btn" (click)="skipFlavor()">
+        <mat-icon>skip_next</mat-icon>
+        Skip
+      </button>
     </mat-card-content>
   </mat-card>
 
   <!-- Step 3: Processing Method -->
-  @if (flavorProfile()) {
+  @if (flavorProfile() && !skipDetails()) {
     <mat-card class="step-card" appearance="outlined">
       <mat-card-header>
         <mat-icon mat-card-avatar class="step-icon">looks_3</mat-icon>
@@ -62,12 +66,16 @@
             </mat-button-toggle>
           }
         </mat-button-toggle-group>
+        <button mat-stroked-button class="skip-btn" (click)="skipProcessing()">
+          <mat-icon>skip_next</mat-icon>
+          Skip
+        </button>
       </mat-card-content>
     </mat-card>
   }
 
   <!-- Step 4: Origin / Altitude -->
-  @if (processingMethod() && originOptions().length > 1) {
+  @if (processingMethod() && originOptions().length > 1 && !skipDetails()) {
     <mat-card class="step-card" appearance="outlined">
       <mat-card-header>
         <mat-icon mat-card-avatar class="step-icon">looks_4</mat-icon>
@@ -90,7 +98,7 @@
   }
 
   <!-- Origin confirmation when auto-selected -->
-  @if (processingMethod() && originOptions().length === 1 && originAltitude()) {
+  @if (processingMethod() && originOptions().length === 1 && originAltitude() && !skipDetails()) {
     <div class="auto-selected-notice">
       <mat-icon>info_outline</mat-icon>
       <span><strong>Origin:</strong> {{ originOptions()[0].label }} ({{ originOptions()[0].description }})</span>
@@ -98,10 +106,10 @@
   }
 
   <!-- Step 5: Amounts -->
-  @if (originAltitude()) {
+  @if (originAltitude() || skipDetails()) {
     <mat-card class="step-card" appearance="outlined">
       <mat-card-header>
-        <mat-icon mat-card-avatar class="step-icon">looks_5</mat-icon>
+        <mat-icon mat-card-avatar class="step-icon">{{ stepIcon(amountsStepNumber()) }}</mat-icon>
         <mat-card-title>Enter Coffee or Water Amount</mat-card-title>
       </mat-card-header>
       <mat-card-content>
@@ -136,21 +144,35 @@
   @if (recipeCalculated()) {
     <mat-card class="step-card" appearance="outlined">
       <mat-card-header>
-        <mat-icon mat-card-avatar class="step-icon">looks_6</mat-icon>
+        <mat-icon mat-card-avatar class="step-icon">{{ stepIcon(instructionsStepNumber()) }}</mat-icon>
         <mat-card-title>Brewing Instructions</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <!-- Temperature Notice -->
-        <div class="temperature-notice">
-          <mat-icon>thermostat</mat-icon>
-          <div>
-            <strong>Recommended Temperature: {{ temperature()?.min }}°C – {{ temperature()?.max }}°C</strong>
-            <p>{{ temperature()?.note }}</p>
+        @if (temperature()) {
+          <div class="temperature-notice">
+            <mat-icon>thermostat</mat-icon>
+            <div>
+              <strong>Recommended Temperature: {{ temperature()?.min }}°C – {{ temperature()?.max }}°C</strong>
+              <p>{{ temperature()?.note }}</p>
+            </div>
           </div>
-        </div>
+        }
 
         <!-- Recipe Summary -->
         <div class="recipe-summary">
+          @if (flavorLabel()) {
+            <div class="recipe-item">
+              <mat-icon>local_florist</mat-icon>
+              <span><strong>Flavor:</strong> {{ flavorLabel() }}</span>
+            </div>
+          }
+          @if (processingLabel()) {
+            <div class="recipe-item">
+              <mat-icon>spa</mat-icon>
+              <span><strong>Processing:</strong> {{ processingLabel() }}</span>
+            </div>
+          }
           <div class="recipe-item">
             <mat-icon>coffee_maker</mat-icon>
             <span><strong>Coffee:</strong> {{ coffeeAmount() }}g</span>

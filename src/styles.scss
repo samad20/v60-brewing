@@ -88,6 +88,10 @@ body {
     border: none !important;
     box-shadow: none !important;
     margin: 0 !important;
+
+    .step-icon {
+      display: none !important;
+    }
   }
 
   .recipe-summary .recipe-item {

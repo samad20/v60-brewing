@@ -59,6 +59,14 @@ $accent-yellow: #ffd166;
   }
 }
 
+// Skip button below toggle groups
+.skip-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0.75rem auto 0;
+}
+
 // Toggle buttons
 .full-width-toggle {
   display: flex;

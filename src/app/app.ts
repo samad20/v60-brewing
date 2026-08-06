@@ -106,6 +106,7 @@ export class App implements OnDestroy {
   waterAmount = signal(300);
   ratio = signal(15);
   recipeCalculated = signal(false);
+  skipDetails = signal(false);
 
   // Timer state
   timerSeconds = signal(30);
@@ -132,6 +133,31 @@ export class App implements OnDestroy {
     return ORIGIN_OPTIONS[`${flavor}|${processing}`] || [];
   });
 
+  flavorLabel = computed<string | null>(() => {
+    const f = this.flavorProfile();
+    if (!f) return null;
+    return f === 'fruity-floral' ? 'Fruity / Floral' : 'Classic / Bold';
+  });
+
+  processingLabel = computed<string | null>(() => {
+    const f = this.flavorProfile();
+    const p = this.processingMethod();
+    if (!f || !p) return null;
+    return PROCESSING_OPTIONS[f].find(o => o.value === p)?.label ?? null;
+  });
+
+  amountsStepNumber = computed<number>(() => {
+    if (this.skipDetails()) return 3;
+    return this.originOptions().length > 1 ? 5 : 4;
+  });
+
+  instructionsStepNumber = computed<number>(() => this.amountsStepNumber() + 1);
+
+  stepIcon(n: number): string {
+    const icons = ['looks_one', 'looks_two', 'looks_3', 'looks_4', 'looks_5', 'looks_6'];
+    return icons[n - 1] ?? 'looks_6';
+  }
+
   temperature = computed<TempResult | null>(() => {
     const flavor = this.flavorProfile();
     const processing = this.processingMethod();
@@ -144,12 +170,29 @@ export class App implements OnDestroy {
     this.flavorProfile.set(value);
     this.processingMethod.set(null);
     this.originAltitude.set(null);
+    this.skipDetails.set(false);
+    this.recipeCalculated.set(false);
+  }
+
+  skipFlavor(): void {
+    this.flavorProfile.set(null);
+    this.processingMethod.set(null);
+    this.originAltitude.set(null);
+    this.skipDetails.set(true);
+    this.recipeCalculated.set(false);
+  }
+
+  skipProcessing(): void {
+    this.processingMethod.set(null);
+    this.originAltitude.set(null);
+    this.skipDetails.set(true);
     this.recipeCalculated.set(false);
   }
 
   onProcessingChange(value: ProcessingMethod): void {
     this.processingMethod.set(value);
     this.originAltitude.set(null);
+    this.skipDetails.set(false);
     this.recipeCalculated.set(false);
     // Auto-select origin if only one option
     const flavor = this.flavorProfile();
@@ -228,17 +271,15 @@ export class App implements OnDestroy {
     this.iceAmount.set(halfTotal);
     this.coldWaterAmount.set(halfTotal);
 
-    const coldFirstPour = coffee * 2;
-    let coldCumulative = coldFirstPour;
-    const coldRemaining = halfTotal - coldFirstPour;
-    const coldPourAmount = Math.round(coldRemaining / 2);
+    const coldPourAmount = Math.round(halfTotal / 3);
+    let coldCumulative = coldPourAmount;
 
     const coldSteps: PourStep[] = [
       {
         label: 'Bloom',
-        amount: coldFirstPour,
-        cumulative: coldFirstPour,
-        description: `Pour ${coldFirstPour}g of water for the bloom. Wait 30 seconds.`,
+        amount: coldPourAmount,
+        cumulative: coldPourAmount,
+        description: `Pour ${coldPourAmount}g of water for the bloom. Wait 30 seconds.`,
       },
     ];
 
@@ -308,6 +349,7 @@ export class App implements OnDestroy {
     this.ratio.set(15);
     this.waterAmount.set(300);
     this.recipeCalculated.set(false);
+    this.skipDetails.set(false);
     this.resetTimer();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
