@@ -64,3 +64,7 @@ Stop and remove the container:
 ```bash
 docker compose down
 ```
+
+## License
+
+Released under the [MIT License](LICENSE).
